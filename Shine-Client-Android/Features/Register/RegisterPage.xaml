@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Shine_Client_Android.ViewModels"
+             x:Class="Shine_Client_Android.RegisterPage"
+             Title="RegisterPage">
+    
+    <ContentPage.BindingContext>
+        <vm:RegisterViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="30" Spacing="20">
+        <Label Text="Регистрация" FontSize="24" HorizontalOptions="Center" />
+        
+        <Entry Placeholder="FullName" Text="{Binding FullName}" />
+        <Entry Placeholder="Email" Text="{Binding Email}" Keyboard="Email" />
+        <Entry Placeholder="Пароль" Text="{Binding Password}" IsPassword="True" />
+        <Entry Placeholder="Подтвердите пароль" Text="{Binding ConfirmPassword}" IsPassword="True" />
+
+        <Button Text="Зарегистрироваться" Command="{Binding RegisterCommand}" />
+
+        <Label Text="Или зарегистрируйтесь через:" FontSize="16" HorizontalOptions="Center" />
+        
+        <Button Text="Google" Command="{Binding GoogleRegisterCommand}" />
+        
+        <Label Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding IsErrorVisible}" />
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Shine_Client_Android.ViewModels"
+             xmlns:shoppingList="clr-namespace:Shine_Client_Android.Features.ShoppingList"
+             x:Class="Shine_Client_Android.ShoppingListPage"
+             Title="ShoppingListPage">
+
+    <ContentPage.BindingContext>
+        <shoppingList:ShoppingListViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="10">
+        <Button Text="Добавить новый список" Command="{Binding AddListCommand}" />
+        <CollectionView ItemsSource="{Binding ShoppingLists}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal" Padding="5">
+                        <Label Text="{Binding Name}" VerticalOptions="Center" />
+                        <Button Text="Открыть" Command="{Binding Source={RelativeSource AncestorType={x:Type shoppingList:ShoppingListViewModel}}, Path=OpenListCommand}" CommandParameter="{Binding .}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

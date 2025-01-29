@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "829305372507",
+    "project_id": "shine-montece",
+    "storage_bucket": "shine-montece.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829305372507:android:d8cb81bace09614d60e47e",
+        "android_client_info": {
+          "package_name": "com.montece.shine"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-GBcN4sVFPVDU52l5fLQbuIQfhj0FcpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
