@@ -1,0 +1,60 @@
+﻿networks:
+  shine_network:
+    driver: bridge
+
+services:
+  users-database:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: shine-sql-database-users
+    restart: always
+    environment:
+      SA_PASSWORD: "IEXzYzjos-F0c"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - shine_network
+
+  users-api:
+    build:
+      context: ./Shine-Service-Users
+      dockerfile: Dockerfile
+    container_name: Shine-Service-Users
+    restart: always
+    depends_on:
+      - users-database
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=shine-sql-database-users,1433;Database=UserDb;User Id=sa;Password=IEXzYzjos-F0c;TrustServerCertificate=True;
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5000:5000"
+    networks:
+      - shine_network
+
+  shopping-database:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: shine-sql-database-shopping
+    restart: always
+    environment:
+      SA_PASSWORD: "JTLzYzjos-P8r"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+    networks:
+      - shine_network
+
+  shopping-api:
+    build:
+      context: ./Shine-Service-Shopping
+      dockerfile: Dockerfile
+    container_name: Shine-Service-Shopping
+    restart: always
+    depends_on:
+      - shopping-database
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=shine-sql-database-shopping,1433;Database=ShoppingDb;User Id=sa;Password=JTLzYzjos-P8r;TrustServerCertificate=True;
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5001:5000"
+    networks:
+      - shine_network

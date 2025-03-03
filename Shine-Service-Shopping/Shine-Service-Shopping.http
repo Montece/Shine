@@ -1,0 +1,6 @@
+@Shine_Service_Shopping_HostAddress = http://localhost:5029
+
+GET {{Shine_Service_Shopping_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

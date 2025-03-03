@@ -56,6 +56,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Platforms\Android\Resources\values\network_security_config.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Platforms\Android\google-services.json" />
 	</ItemGroup>
 

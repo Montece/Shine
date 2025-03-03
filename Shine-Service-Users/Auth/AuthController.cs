@@ -20,7 +20,8 @@ public class AuthController(ILogger<AuthController> logger, AppDbContext context
 
         if (existingUser != null)
         {
-            return BadRequest("Пользователь с таким email уже существует.");
+            return BadRequest("A user with this email already exists.");
+            //return BadRequest("Пользователь с таким email уже существует.");
         }
 
         var passwordHash = PasswordUtil.HashPassword(model.Password);
@@ -37,7 +38,8 @@ public class AuthController(ILogger<AuthController> logger, AppDbContext context
 
         await _context.SaveChangesAsync();
 
-        return Ok(new { message = "Пользователь зарегистрирован!" });
+        return Ok(new { message = "User registered!" });
+        //return Ok(new { message = "Пользователь зарегистрирован!" });
     }
 
     [HttpPost("login")]
@@ -47,7 +49,8 @@ public class AuthController(ILogger<AuthController> logger, AppDbContext context
 
         if (user == null || !PasswordUtil.VerifyPassword(model.Password, user.PasswordHash))
         {
-            return Unauthorized("Неверный email или пароль.");
+            return Unauthorized("Incorrect email or password.");
+            //return Unauthorized("Неверный email или пароль.");
         }
 
         var token = GenerateJwtToken(user);

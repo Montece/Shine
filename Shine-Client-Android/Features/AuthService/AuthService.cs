@@ -16,7 +16,7 @@ public class AuthService
     {
         var request = new RegisterRequest { FullName = fullName, Email = email, Password = password };
 
-        var response = await _httpClient.PostAsJsonAsync("/Auth/register", request);
+        var response = await _httpClient.PostAsJsonAsync("http://10.6.0.144:5000/api/Auth/register", request);
 
         if (response.IsSuccessStatusCode)
         {

@@ -23,7 +23,7 @@ internal partial class LoginViewModel : ObservableObject
 
     public LoginViewModel()
     {
-        _authService = new(CustomHttpClientHandler.CreateHttpClient(), new("https://10.6.0.144:44375/api/"));
+        _authService = new(CustomHttpClientHandler.CreateHttpClient(), new("http://10.6.0.144:5000/api"));
 
         IsErrorVisible = false;
     }
