@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35303.130
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shine-Client-Android", "Shine-Client-Android\Shine-Client-Android.csproj", "{4E26404E-B0CC-436D-B567-1F3389F1049C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shine-Service-Users", "Shine-Service-Users\Shine-Service-Users.csproj", "{59758644-2249-435A-8785-C3353ACFDADB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shine-Service-Shopping", "Shine-Service-Shopping\Shine-Service-Shopping.csproj", "{8DAA2F1B-8CC1-4F74-B80B-6138FCB8744B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E26404E-B0CC-436D-B567-1F3389F1049C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E26404E-B0CC-436D-B567-1F3389F1049C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E26404E-B0CC-436D-B567-1F3389F1049C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4E26404E-B0CC-436D-B567-1F3389F1049C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E26404E-B0CC-436D-B567-1F3389F1049C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E26404E-B0CC-436D-B567-1F3389F1049C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{59758644-2249-435A-8785-C3353ACFDADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59758644-2249-435A-8785-C3353ACFDADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59758644-2249-435A-8785-C3353ACFDADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59758644-2249-435A-8785-C3353ACFDADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DAA2F1B-8CC1-4F74-B80B-6138FCB8744B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DAA2F1B-8CC1-4F74-B80B-6138FCB8744B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DAA2F1B-8CC1-4F74-B80B-6138FCB8744B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DAA2F1B-8CC1-4F74-B80B-6138FCB8744B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6BE408FA-F284-4C58-B247-87C6AF798263}
+	EndGlobalSection
+EndGlobal

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Shine_Client_Android.Features.Services;
 
 namespace Shine_Client_Android.Features.ShoppingList;
 
@@ -12,11 +13,17 @@ internal partial class ShoppingListViewModel : ObservableObject
 
     public ShoppingListViewModel()
     {
-        ShoppingLists =
-        [
-            new() { Name = "Продукты" },
-            new() { Name = "Хозяйственные товары" }
-        ];
+        InitializeList();
+    }
+
+    private void InitializeList()
+    {
+        var list = ServicesManager.Instance.ShoppingService.GetShoppingListsAsync(ServicesManager.Instance.AuthService.Token).Result;
+        
+        if (list != null)
+        {
+            ShoppingLists = list;
+        }
     }
 
     [RelayCommand]
@@ -24,7 +31,7 @@ internal partial class ShoppingListViewModel : ObservableObject
     {
         // TODO: Реализовать добавление нового списка.
 
-        ShoppingLists.Add(new() { Name = "Новый список" });
+        //ShoppingLists.Add(new() { Name = "Новый список" });
     }
 
     [RelayCommand]
@@ -32,6 +39,6 @@ internal partial class ShoppingListViewModel : ObservableObject
     {
         // TODO: Реализовать переход на страницу редактирования списка.
 
-        await Shell.Current.GoToAsync($"ShoppingListEditPage?listId={list.Id}");
+        //await Shell.Current.GoToAsync($"ShoppingListEditPage?listId={list.Id}");
     }
 }

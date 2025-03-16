@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Shine_Service_Users;
+namespace Shine_Service_Shopping.Database;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public DbSet<User> Users { get; set; }
+    public DbSet<ShoppingList> ShoppingLists { get; set; }
 }

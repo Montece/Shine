@@ -1,30 +1,27 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Shine_Client_Android.Features.AuthService;
+using Shine_Client_Android.Features.Auth;
+using Shine_Client_Android.Features.Services;
 
-namespace Shine_Client_Android.ViewModels;
+namespace Shine_Client_Android.Features.Register;
 
 internal partial class RegisterViewModel : ObservableObject
 {
     // ReSharper disable once InconsistentNaming
-    [ObservableProperty] private string fullName;
+    [ObservableProperty] private string fullName = null!;
     // ReSharper disable once InconsistentNaming
-    [ObservableProperty] private string email;
+    [ObservableProperty] private string email = null!;
     // ReSharper disable once InconsistentNaming
-    [ObservableProperty] private string password;
+    [ObservableProperty] private string password = null!;
     // ReSharper disable once InconsistentNaming
-    [ObservableProperty] private string confirmPassword;
+    [ObservableProperty] private string confirmPassword = null!;
     // ReSharper disable once InconsistentNaming
-    [ObservableProperty] private string errorMessage;
+    [ObservableProperty] private string errorMessage = null!;
     // ReSharper disable once InconsistentNaming
     [ObservableProperty] private bool isErrorVisible;
 
-    private readonly AuthService _authService;
-
     public RegisterViewModel()
     {
-        _authService = new(CustomHttpClientHandler.CreateHttpClient(), new("http://10.6.0.144:5000/api"));
-
         IsErrorVisible = false;
     }
 
@@ -51,10 +48,12 @@ internal partial class RegisterViewModel : ObservableObject
 
         try
         {
-            var result = await _authService.RegisterAsync(fullName, email, password);
+            var result = await ServicesManager.Instance.AuthService.RegisterAsync(fullName, email, password);
 
             if (result.success)
             {
+                // TODO Показ успешной регистрации
+
                 await Shell.Current.GoToAsync("ShoppingListPage");
             }
             else

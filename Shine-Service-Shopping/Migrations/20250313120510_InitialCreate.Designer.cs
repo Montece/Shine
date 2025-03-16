@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Shine_Service_Shopping;
+using Shine_Service_Shopping.Database;
 
 #nullable disable
 
 namespace Shine_Service_Shopping.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250227133024_InitialCreate")]
+    [Migration("20250313120510_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,7 +24,7 @@ namespace Shine_Service_Shopping.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Shine_Service_Shopping.ShoppingList", b =>
+            modelBuilder.Entity("Shine_Service_Shopping.Database.ShoppingList", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,12 +36,13 @@ namespace Shine_Service_Shopping.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("ShoppingLists");
                 });
 #pragma warning restore 612, 618
         }

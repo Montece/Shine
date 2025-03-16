@@ -2,7 +2,7 @@
 
 namespace Shine_Client_Android;
 
-public partial class App : Application
+public partial class App
 {
     public App()
     {
@@ -10,14 +10,14 @@ public partial class App : Application
 
         MainPage = new AppShell();
 
-        CrossFirebaseCloudMessaging.Current.TokenChanged += (s, e) =>
+        CrossFirebaseCloudMessaging.Current.TokenChanged += (_, e) =>
         {
             Console.WriteLine($"FCM Token: {e.Token}");
         };
 
         CrossFirebaseCloudMessaging.Current.SubscribeToTopicAsync("news");
 
-        CrossFirebaseCloudMessaging.Current.NotificationReceived += (s, e) =>
+        CrossFirebaseCloudMessaging.Current.NotificationReceived += (_, e) =>
         {
             Console.WriteLine($"Уведомление: {e.Notification.Title} - {e.Notification.Body}");
         };

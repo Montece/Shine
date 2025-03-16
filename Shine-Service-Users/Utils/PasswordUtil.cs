@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Shine_Service_Users.Auth;
+namespace Shine_Service_Users.Utils;
 
 internal static class PasswordUtil
 {

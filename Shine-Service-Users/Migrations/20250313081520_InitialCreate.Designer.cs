@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Shine_Service_Users;
+using Shine_Service_Users.Database;
 
 #nullable disable
 
 namespace Shine_Service_Users.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250121130716_InitialCreate")]
+    [Migration("20250313081520_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,12 +20,12 @@ namespace Shine_Service_Users.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Shine_Service_Users.User", b =>
+            modelBuilder.Entity("Shine_Service_Users.Database.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

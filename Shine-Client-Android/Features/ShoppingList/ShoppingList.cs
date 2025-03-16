@@ -2,6 +2,11 @@
 
 internal class ShoppingList
 {
-    public string Id { get; } = Guid.NewGuid().ToString();
-    public string Name { get; set; } = string.Empty;
+    public required string Id { get; set; }
+
+    public required string Name { get; set; }
+
+    public required string UserId { get; set; }
+
+    public required DateTime CreatedAt { get; set; }
 }

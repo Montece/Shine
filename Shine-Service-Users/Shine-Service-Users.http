@@ -1,6 +1,0 @@
-@Shine_Service_Users_HostAddress = http://localhost:5272
-
-GET {{Shine_Service_Users_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

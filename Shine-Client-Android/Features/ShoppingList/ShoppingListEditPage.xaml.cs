@@ -1,6 +1,6 @@
-namespace Shine_Client_Android;
+namespace Shine_Client_Android.Features.ShoppingList;
 
-public partial class ShoppingListEditPage : ContentPage
+public partial class ShoppingListEditPage
 {
 	public ShoppingListEditPage()
 	{

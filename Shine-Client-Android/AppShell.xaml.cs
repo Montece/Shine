@@ -1,6 +1,9 @@
-﻿namespace Shine_Client_Android
+﻿using Shine_Client_Android.Features.Register;
+using Shine_Client_Android.Features.ShoppingList;
+
+namespace Shine_Client_Android
 {
-    public partial class AppShell : Shell
+    public partial class AppShell
     {
         public AppShell()
         {

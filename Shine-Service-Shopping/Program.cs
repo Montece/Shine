@@ -1,7 +1,10 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Shine_Service_Shopping;
+using Shine_Service_Shopping.Database;
+using Shine_Service_Shopping.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -11,18 +14,11 @@ builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
-{
-    options.Authority = "https://Shine-Service-ShoppingLists:5000";
-    options.ClaimsIssuer = "shine";
-    options.Audience = "shine";
-});
+services.AddAuthorization();
 
 services.AddControllers();
 
 services.AddEndpointsApiExplorer();
-
-services.AddSwaggerGen();
 
 services.AddSwaggerGen(c =>
 {
@@ -56,11 +52,13 @@ services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-//if (app.Environment.IsDevelopment())
+/*if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+}*/
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -68,6 +66,8 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.Database.Migrate();
 }
+
+app.UseMiddleware<AuthMiddleware>();
 
 app.UseHttpsRedirection();
 

@@ -3,12 +3,12 @@
     x:Class="Shine_Client_Android.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Shine_Client_Android"
-    Shell.FlyoutBehavior="Disabled"
+    xmlns:login="clr-namespace:Shine_Client_Android.Features.Login"
+    FlyoutBehavior="Disabled"
     Title="Shine_Client_Android">
 
     <FlyoutItem Title="Список покупок">
-        <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" />
+        <ShellContent ContentTemplate="{DataTemplate login:LoginPage}" />
     </FlyoutItem>
 
 </Shell>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:Shine_Client_Android.ViewModels"
-             x:Class="Shine_Client_Android.RegisterPage"
+             xmlns:register="clr-namespace:Shine_Client_Android.Features.Register"
+             x:Class="Shine_Client_Android.Features.Register.RegisterPage"
              Title="RegisterPage">
     
     <ContentPage.BindingContext>
-        <vm:RegisterViewModel />
+        <register:RegisterViewModel />
     </ContentPage.BindingContext>
 
     <StackLayout Padding="30" Spacing="20">

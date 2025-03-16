@@ -80,6 +80,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Features\Login123\LoginPage2.xaml.cs">
+	    <DependentUpon>LoginPage2.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Features\Login\LoginPage.xaml.cs">
+	    <DependentUpon>LoginPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Features\Login123\LoginPage2.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Features\Login\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

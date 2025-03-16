@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Shine_Client_Android.Features.AuthService;
+using Shine_Client_Android.Features.Services;
+using Shine_Client_Android.Features.ShoppingList;
 
 namespace Shine_Client_Android.Features.Login;
 
@@ -19,12 +20,8 @@ internal partial class LoginViewModel : ObservableObject
     // ReSharper disable once InconsistentNaming
     private bool isErrorVisible;
 
-    private readonly AuthService.AuthService _authService;
-
     public LoginViewModel()
     {
-        _authService = new(CustomHttpClientHandler.CreateHttpClient(), new("http://10.6.0.144:5000/api"));
-
         IsErrorVisible = false;
     }
 
@@ -40,18 +37,18 @@ internal partial class LoginViewModel : ObservableObject
 
         try
         {
-            var result = await _authService.LoginAsync(email, password);
+            var result = await ServicesManager.Instance.AuthService.LoginAsync(email, password);
 
             if (result.success)
             {
-                await Shell.Current.GoToAsync("ShoppingListPage");
+                await Shell.Current.GoToAsync(nameof(ShoppingListPage));
             }
             else
             {
                 throw new(result.message);
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ErrorMessage = "Неверный email или пароль.";
             IsErrorVisible = true;
