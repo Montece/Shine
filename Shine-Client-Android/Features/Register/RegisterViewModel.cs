@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Android.Widget;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shine_Client_Android.Features.Auth;
 using Shine_Client_Android.Features.Services;
@@ -52,9 +53,7 @@ internal partial class RegisterViewModel : ObservableObject
 
             if (result.success)
             {
-                // TODO Показ успешной регистрации
-
-                await Shell.Current.GoToAsync("ShoppingListPage");
+                Toast.MakeText(MainActivity.Context, "Успешная регистрация!", ToastLength.Short)?.Show();
             }
             else
             {
@@ -74,12 +73,9 @@ internal partial class RegisterViewModel : ObservableObject
     {
         try
         {
+            throw new NotImplementedException("Не реализовано!");
+            
             // TODO: Реализовать интеграцию с Google OAuth
-
-            await Task.Delay(500); // Заглушка
-
-            // После успешной регистрации
-            await Shell.Current.GoToAsync("ShoppingListPage");
         }
         catch (Exception ex)
         {

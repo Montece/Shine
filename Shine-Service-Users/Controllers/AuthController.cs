@@ -45,9 +45,9 @@ public class AuthController(ILogger<AuthController> logger, JwtService jwtServic
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error register user.");
+            _logger.LogError(ex, "Error to register user.");
 
-            return BadRequest("Error register user.");
+            return BadRequest("Error to register user.");
         }
     }
 
@@ -88,7 +88,7 @@ public class AuthController(ILogger<AuthController> logger, JwtService jwtServic
                 var claims = jwtToken.Claims.ToDictionary(c => c.Type, c => c.Value);
                 var userId = claims["sub"];
             
-                return Ok(new { UserId = userId });
+                return Ok(userId);
             }
 
             return Unauthorized("Validating token failed!");

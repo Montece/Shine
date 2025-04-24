@@ -18,27 +18,47 @@ internal partial class ShoppingListViewModel : ObservableObject
 
     private void InitializeList()
     {
+        ShoppingLists = new ObservableCollection<ShoppingList>();
+
         var list = ServicesManager.Instance.ShoppingService.GetShoppingListsAsync(ServicesManager.Instance.AuthService.Token).Result;
         
         if (list != null)
         {
-            ShoppingLists = list;
+            foreach (var shoppingList in list)
+            {
+                ShoppingLists.Add(shoppingList);
+            }
         }
     }
 
     [RelayCommand]
     private async Task AddList()
     {
-        // TODO: Реализовать добавление нового списка.
+        var id = Guid.NewGuid().ToString();
+        var name = $"Список {DateTime.Now.ToShortDateString()}";
+        
+        var result = await ServicesManager.Instance.ShoppingService.AddShoppingListAsync(ServicesManager.Instance.AuthService.Token, id, name).ConfigureAwait(false);
 
-        //ShoppingLists.Add(new() { Name = "Новый список" });
+        if (result.success)
+        {
+            if (result.addedShoppingList != null)
+            {
+                ShoppingLists.Add(new ShoppingList
+                {
+                    Id = result.addedShoppingList.Id,
+                    Name = result.addedShoppingList.Name,
+                    UserId = result.addedShoppingList.UserId,
+                    CreatedAt = result.addedShoppingList.CreatedAt
+                });
+            }
+        }
     }
 
     [RelayCommand]
-    private async Task OpenList(ShoppingList list)
+    private async Task OpenList(ShoppingList shoppingList)
     {
-        // TODO: Реализовать переход на страницу редактирования списка.
+        ServicesManager.Instance.ShoppingService.CurrentShoppingListId = shoppingList.Id;
 
-        //await Shell.Current.GoToAsync($"ShoppingListEditPage?listId={list.Id}");
+        await Shell.Current.GoToAsync(nameof(ShoppingListEditPage)).ConfigureAwait(false);
     }
 }
