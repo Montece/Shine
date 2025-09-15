@@ -1,0 +1,273 @@
+@page "{id}"
+@model Shine.Web.Client.Pages.Lists.DetailsModel
+@{
+    ViewData["Title"] = Model.ListViewModel?.List.Name ?? "Список покупок";
+}
+
+@if (Model.ListViewModel != null)
+{
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a asp-page="Index">
+                            <i class="fas fa-home me-1"></i>Списки
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        @Model.ListViewModel.List.Name
+                    </li>
+                </ol>
+            </nav>
+            <h1 class="h2 mb-0">
+                <i class="fas fa-list text-primary me-2"></i>
+                @Model.ListViewModel.List.Name
+            </h1>
+            <small class="text-muted">
+                Создан @Model.ListViewModel.List.CreatedAt.ToString("dd MMMM yyyy")
+            </small>
+        </div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItemModal">
+            <i class="fas fa-plus me-2"></i>Добавить товар
+        </button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            @Model.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            @Model.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Progress Card -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h5 class="card-title mb-2">
+                        <i class="fas fa-chart-pie text-primary me-2"></i>
+                        Прогресс покупок
+                    </h5>
+                    <div class="d-flex gap-4 mb-2">
+                        <span class="text-muted">
+                            <i class="fas fa-shopping-basket me-1"></i>
+                            Всего: <strong>@Model.ListViewModel.TotalItems</strong>
+                        </span>
+                        <span class="text-success">
+                            <i class="fas fa-check-circle me-1"></i>
+                            Куплено: <strong>@Model.ListViewModel.CompletedItems</strong>
+                        </span>
+                        <span class="text-secondary">
+                            <i class="fas fa-clock me-1"></i>
+                            Осталось: <strong>@(Model.ListViewModel.TotalItems - Model.ListViewModel.CompletedItems)</strong>
+                        </span>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-success" role="progressbar" 
+                             style="width: @(Model.ListViewModel.Progress)%" 
+                             aria-valuenow="@Model.ListViewModel.Progress" 
+                             aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="display-4 text-primary">
+                        @Math.Round(Model.ListViewModel.Progress, 0)<small class="fs-6">%</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.ListViewModel.Items.Any())
+    {
+        <!-- Items List -->
+        <div class="row">
+            @foreach (var item in Model.ListViewModel.Items.OrderBy(i => i.IsPurchased).ThenByDescending(i => i.CreatedAt))
+            {
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="card h-100 @(item.IsPurchased ? "border-success" : "")">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start">
+                                <div class="me-3">
+                                    <div class="item-image @(item.IsPurchased ? "purchased" : "")" 
+                                         style="width: 60px; height: 60px; border-radius: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                                        <i class="@GetItemIcon(item.Name)"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="card-title mb-1 @(item.IsPurchased ? "text-decoration-line-through text-muted" : "")">
+                                        @item.Name
+                                    </h6>
+                                    <small class="text-muted">
+                                        Добавлено @item.CreatedAt.ToString("dd.MM.yyyy HH:mm")
+                                    </small>
+                                    @if (item.IsPurchased)
+                                    {
+                                        <div class="mt-1">
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check me-1"></i>Куплено
+                                            </span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex gap-2">
+                                <form method="post" asp-page-handler="ToggleItem" class="flex-grow-1">
+                                    <input type="hidden" name="itemId" value="@item.Id" />
+                                    <input type="hidden" name="isPurchased" value="@(!item.IsPurchased)" />
+                                    <button type="submit" class="btn @(item.IsPurchased ? "btn-outline-secondary" : "btn-success") btn-sm w-100">
+                                        @if (item.IsPurchased)
+                                        {
+                                            <i class="fas fa-undo me-1"></i><text>Не куплено</text>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-check me-1"></i><text>Куплено</text>
+                                        }
+                                    </button>
+                                </form>
+                                <form method="post" asp-page-handler="RemoveItem">
+                                    <input type="hidden" name="itemId" value="@item.Id" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" 
+                                            onclick="return confirm('Удалить @item.Name из списка?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="fas fa-shopping-basket fa-4x text-muted"></i>
+            </div>
+            <h3 class="text-muted mb-3">Список пуст</h3>
+            <p class="text-muted mb-4">Добавьте товары в ваш список покупок</p>
+            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                <i class="fas fa-plus me-2"></i>Добавить товар
+            </button>
+        </div>
+    }
+
+    <!-- Add Item Modal -->
+    <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="AddItem">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addItemModalLabel">
+                            <i class="fas fa-plus text-primary me-2"></i>
+                            Добавить товар
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label asp-for="NewItemName" class="form-label">
+                                <i class="fas fa-shopping-basket me-2"></i>Название товара
+                            </label>
+                            <input asp-for="NewItemName" class="form-control form-control-lg" 
+                                   placeholder="Например: Молоко 1л" required />
+                            <span asp-validation-for="NewItemName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Отмена
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Добавить товар
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <i class="fas fa-exclamation-triangle fa-4x text-warning"></i>
+        </div>
+        <h3 class="text-muted mb-3">Список не найден</h3>
+        <p class="text-muted mb-4">Запрашиваемый список покупок не существует или недоступен</p>
+        <a asp-page="Index" class="btn btn-primary">
+            <i class="fas fa-arrow-left me-2"></i>Вернуться к спискам
+        </a>
+    </div>
+}
+
+@functions {
+    private string GetItemIcon(string itemName)
+    {
+        var name = itemName.ToLower();
+        
+        var categories = new Dictionary<string, string[]>
+        {
+            ["fas fa-apple-alt"] = new[] { "яблоко", "яблок", "фрукт", "банан", "апельсин", "груша", "персик", "ягод" },
+            ["fas fa-carrot"] = new[] { "морковь", "овощ", "картофель", "картошка", "лук", "помидор", "огурец", "капуста", "свекла" },
+            ["fas fa-bread-slice"] = new[] { "хлеб", "булка", "батон", "багет", "выпечка", "булочка" },
+            ["fas fa-cheese"] = new[] { "сыр", "творог", "молоко", "кефир", "йогурт", "масло", "сметана", "ряженка" },
+            ["fas fa-fish"] = new[] { "рыба", "лосось", "треска", "морепродукты", "креветки", "кальмар" },
+            ["fas fa-drumstick-bite"] = new[] { "мясо", "курица", "говядина", "свинина", "колбаса", "сосиски", "фарш" },
+            ["fas fa-ice-cream"] = new[] { "мороженое", "десерт", "торт", "конфеты", "шоколад", "печенье", "пирожное" },
+            ["fas fa-coffee"] = new[] { "кофе", "чай", "напиток", "сок", "вода", "газировка", "лимонад" },
+            ["fas fa-prescription-bottle"] = new[] { "лекарство", "витамин", "таблетки", "аптека", "медицина" },
+            ["fas fa-tshirt"] = new[] { "одежда", "рубашка", "брюки", "обувь", "носки", "футболка" },
+            ["fas fa-home"] = new[] { "дом", "моющее", "порошок", "мыло", "шампунь", "зубная", "туалетная", "бумага" },
+            ["fas fa-car"] = new[] { "бензин", "масло", "автомобиль", "шины", "авто" }
+        };
+
+        foreach (var (icon, keywords) in categories)
+        {
+            if (keywords.Any(keyword => name.Contains(keyword)))
+            {
+                return icon;
+            }
+        }
+
+        return "fas fa-shopping-basket"; // Default icon
+    }
+}
+
+@section Scripts {
+    <script>
+        // Auto-dismiss alerts after 5 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert:not(.alert-permanent)');
+            alerts.forEach(alert => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+
+        // Auto-focus on modal input
+        document.getElementById('addItemModal').addEventListener('shown.bs.modal', function () {
+            const input = this.querySelector('input[name="NewItemName"]');
+            if (input) {
+                input.focus();
+            }
+        });
+    </script>
+}

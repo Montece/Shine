@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Shine</title>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="d-flex flex-column h-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" asp-page="/Lists/Index">
+                    <i class="fas fa-shopping-cart text-primary me-2 fs-4"></i>
+                    <span class="fw-bold fs-4">Shine</span>
+                </a>
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Lists/Index">
+                                    <i class="fas fa-list me-1"></i>Мои списки
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" 
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle me-2"></i>
+                                    @(User.Identity.Name ?? "Пользователь")
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <h6 class="dropdown-header">
+                                            <i class="fas fa-user me-2"></i>
+                                            @(User.Identity.Name ?? "Пользователь")
+                                        </h6>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-page="/Auth/Logout">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Выйти
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-shrink-0">
+        <div class="container my-4">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <span class="text-muted">
+                        &copy; 2024 - Shine. Ваши списки покупок.
+                    </span>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <span class="text-muted">
+                        Создано с <i class="fas fa-heart text-danger"></i> на .NET 8
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

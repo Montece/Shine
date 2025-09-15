@@ -1,0 +1,78 @@
+@page
+@model Shine.Web.Client.Pages.Auth.RegisterModel
+@{
+    ViewData["Title"] = "Регистрация";
+    Layout = "_AuthLayout";
+}
+
+<div class="auth-container">
+    <div class="auth-header text-center mb-4">
+        <i class="fas fa-shopping-cart fa-3x text-primary mb-3"></i>
+        <h1 class="h2 mb-2">Shine</h1>
+        <p class="text-muted">Ваши списки покупок</p>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-4">
+            <h2 class="card-title text-center mb-4">Создание аккаунта</h2>
+            
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    @Model.ErrorMessage
+                </div>
+            }
+
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                
+                <div class="mb-3">
+                    <label asp-for="RegisterData.FullName" class="form-label">
+                        <i class="fas fa-user me-2"></i>Полное имя
+                    </label>
+                    <input asp-for="RegisterData.FullName" class="form-control form-control-lg" placeholder="Введите ваше полное имя" />
+                    <span asp-validation-for="RegisterData.FullName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RegisterData.Email" class="form-label">
+                        <i class="fas fa-envelope me-2"></i>Email
+                    </label>
+                    <input asp-for="RegisterData.Email" class="form-control form-control-lg" placeholder="Введите ваш email" />
+                    <span asp-validation-for="RegisterData.Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RegisterData.Password" class="form-label">
+                        <i class="fas fa-lock me-2"></i>Пароль
+                    </label>
+                    <input asp-for="RegisterData.Password" class="form-control form-control-lg" placeholder="Минимум 6 символов" />
+                    <span asp-validation-for="RegisterData.Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RegisterData.ConfirmPassword" class="form-label">
+                        <i class="fas fa-lock me-2"></i>Подтвердить пароль
+                    </label>
+                    <input asp-for="RegisterData.ConfirmPassword" class="form-control form-control-lg" placeholder="Повторите пароль" />
+                    <span asp-validation-for="RegisterData.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                    <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
+                </button>
+            </form>
+
+            <div class="text-center">
+                <p class="mb-0">
+                    Уже есть аккаунт? <a asp-page="Login" class="text-decoration-none">Войти</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
