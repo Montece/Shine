@@ -17,5 +17,5 @@ public class ShoppingListItem
     public required bool IsPurchased { get; set; }
 
     [Required]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTimeOffset CreatedAt { get; init; }
 }

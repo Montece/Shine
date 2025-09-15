@@ -14,5 +14,5 @@ public class ShoppingList
     public required string UserId { get; init; }
 
     [Required]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTimeOffset CreatedAt { get; init; }
 }

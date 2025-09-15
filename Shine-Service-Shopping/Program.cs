@@ -1,8 +1,7 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using Shine_Service_Shopping.Database;
 using Shine_Service_Shopping.Middlewares;
 
@@ -12,7 +11,10 @@ var configuration = builder.Configuration;
 
 builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
-services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseNpgsql(configuration.GetConnectionString("Postgres"));
+});
 
 services.AddAuthorization();
 
@@ -50,6 +52,16 @@ services.AddSwaggerGen(c =>
     });
 });
 
+services.AddOpenTelemetry()
+    .ConfigureResource(r => r.AddService(
+        serviceName: "Shine-Service-Users",
+        serviceVersion: "1.0.0"))
+    .WithMetrics(m => m
+        .AddAspNetCoreInstrumentation()   // RPS, latency, коды ответов
+        .AddHttpClientInstrumentation()   // »сход€щие запросы
+        .AddRuntimeInstrumentation()      // GC, потоки, аллокации
+        .AddPrometheusExporter());
+
 var app = builder.Build();
 
 /*if (app.Environment.IsDevelopment())
@@ -67,7 +79,23 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-app.UseMiddleware<AuthMiddleware>();
+app.MapPrometheusScrapingEndpoint();
+
+//app.UseMiddleware<AuthMiddleware>();
+
+app.UseWhen(
+    ctx => !ctx.Request.Path.StartsWithSegments("/Ping/ping", StringComparison.OrdinalIgnoreCase) && !ctx.Request.Path.StartsWithSegments("/metrics", StringComparison.OrdinalIgnoreCase),
+    branch => branch.UseMiddleware<AuthMiddleware>()
+    );
+
+if (Environment.GetEnvironmentVariable("INSTANCE_HEADER") == "true")
+{
+    app.Use(async (ctx, next) =>
+    {
+        ctx.Response.Headers["X-Instance"] = Environment.MachineName;
+        await next();
+    });
+}
 
 app.UseHttpsRedirection();
 

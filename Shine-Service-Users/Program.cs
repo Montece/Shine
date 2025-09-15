@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using Shine_Service_Users.Database;
 using Shine_Service_Users.Jwt;
 using System.Text;
@@ -14,7 +16,7 @@ builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+    options.UseNpgsql(configuration.GetConnectionString("Postgres"));
 });
 
 services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
@@ -24,7 +26,6 @@ ArgumentNullException.ThrowIfNull(jwtSettings);
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
-    //options.SaveToken = true;
 
     options.TokenValidationParameters = new()
     {
@@ -35,7 +36,6 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
         ValidAudience = jwtSettings.Audience,
 
         ValidateLifetime = true,
-        //ClockSkew = TimeSpan.FromSeconds(5),
 
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
@@ -80,6 +80,16 @@ services.AddSwaggerGen(c =>
     });
 });
 
+services.AddOpenTelemetry()
+    .ConfigureResource(r => r.AddService(
+        serviceName: "Shine-Service-Users",
+        serviceVersion: "1.0.0"))
+    .WithMetrics(m => m
+        .AddAspNetCoreInstrumentation()   // RPS, latency, коды ответов
+        .AddHttpClientInstrumentation()   // »сход€щие запросы
+        .AddRuntimeInstrumentation()      // GC, потоки, аллокации
+        .AddPrometheusExporter());
+
 var app = builder.Build();
 
 /*if (app.Environment.IsDevelopment())
@@ -96,6 +106,8 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.Database.Migrate();
 }
+
+app.MapPrometheusScrapingEndpoint();
 
 app.UseHttpsRedirection();
 

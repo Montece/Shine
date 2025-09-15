@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shine-Service-Users", "Shin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shine-Service-Shopping", "Shine-Service-Shopping\Shine-Service-Shopping.csproj", "{8DAA2F1B-8CC1-4F74-B80B-6138FCB8744B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shine-Web-Client-RazorPages", "Shine-Web-Client-RazorPages\Shine-Web-Client-RazorPages.csproj", "{BE745277-4E7E-A8A0-5ABE-E2BA3999D265}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{8DAA2F1B-8CC1-4F74-B80B-6138FCB8744B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DAA2F1B-8CC1-4F74-B80B-6138FCB8744B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DAA2F1B-8CC1-4F74-B80B-6138FCB8744B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE745277-4E7E-A8A0-5ABE-E2BA3999D265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE745277-4E7E-A8A0-5ABE-E2BA3999D265}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE745277-4E7E-A8A0-5ABE-E2BA3999D265}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE745277-4E7E-A8A0-5ABE-E2BA3999D265}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'users-api'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['Shine-Service-Users:5000']
+  - job_name: 'shopping-api-1'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['Shine-Service-Shopping-1:5000']
+  - job_name: 'shopping-api-2'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['Shine-Service-Shopping-2:5000']

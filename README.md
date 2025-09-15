@@ -12,3 +12,6 @@ C# ASP.NET MAUI micro-service shopping list application
 - Firebase
 - Swagger
 - xUnit & MOQ
+
+Количество запросов за последнюю минуту:
+sum(increase(http_server_request_duration_seconds_count[1m]))

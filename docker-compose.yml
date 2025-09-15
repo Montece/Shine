@@ -2,16 +2,23 @@
   shine_network:
     driver: bridge
 
+volumes:
+  pgdata_users: {}
+  pgdata_shopping: {}
+  grafana_data: {}
+
 services:
   users-database:
-    image: mcr.microsoft.com/mssql/server:latest
-    container_name: shine-sql-database-users
+    image: postgres:16
+    container_name: shine-database-users
     restart: always
     environment:
-      SA_PASSWORD: "IEXzYzjos-F0c"
-      ACCEPT_EULA: "Y"
-    ports:
-      - "1433:1433"
+      POSTGRES_USER: "shine"
+      POSTGRES_PASSWORD: "IEXzYzjos-F0c"
+      POSTGRES_DB: UserDb
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata_users:/var/lib/postgresql/data
     networks:
       - shine_network
 
@@ -23,38 +30,93 @@ services:
     restart: always
     depends_on:
       - users-database
-    environment:
-      - ConnectionStrings__DefaultConnection=Server=shine-sql-database-users,1433;Database=UserDb;User Id=sa;Password=IEXzYzjos-F0c;TrustServerCertificate=True;
-      - ASPNETCORE_ENVIRONMENT=Development
+    #environment:
+      #ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "5000:5000"
     networks:
       - shine_network
 
   shopping-database:
-    image: mcr.microsoft.com/mssql/server:latest
-    container_name: shine-sql-database-shopping
+    image: postgres:16
+    container_name: shine-database-shopping
     restart: always
     environment:
-      SA_PASSWORD: "JTLzYzjos-P8r"
-      ACCEPT_EULA: "Y"
+      POSTGRES_USER: "shine"
+      POSTGRES_PASSWORD: "JTLzYzjos-P8r"
+      POSTGRES_DB: ShoppingDb
     ports:
-      - "1434:1433"
+      - "5433:5432"
+    volumes:
+      - pgdata_shopping:/var/lib/postgresql/data
     networks:
       - shine_network
 
-  shopping-api:
+  shopping-api-1:
     build:
       context: ./Shine-Service-Shopping
       dockerfile: Dockerfile
-    container_name: Shine-Service-Shopping
+    container_name: Shine-Service-Shopping-1
     restart: always
     depends_on:
       - shopping-database
     environment:
-      - ConnectionStrings__DefaultConnection=Server=shine-sql-database-shopping,1433;Database=ShoppingDb;User Id=sa;Password=JTLzYzjos-P8r;TrustServerCertificate=True;
-      - ASPNETCORE_ENVIRONMENT=Development
+      #ASPNETCORE_ENVIRONMENT=Development
+      INSTANCE_HEADER: "true"
     ports:
       - "5001:5000"
     networks:
       - shine_network
+
+  shopping-api-2:
+    build:
+      context: ./Shine-Service-Shopping
+      dockerfile: Dockerfile
+    container_name: Shine-Service-Shopping-2
+    restart: always
+    depends_on:
+      - shopping-database
+    environment:
+      #ASPNETCORE_ENVIRONMENT=Development
+      INSTANCE_HEADER: "true"
+    ports:
+      - "5002:5000"
+    networks:
+      - shine_network
+
+  nginx:
+    image: nginx:stable
+    container_name: nginx
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - shine_network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: Shine-Prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    networks:
+      - shine_network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: Shine-Grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - shine_network
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
