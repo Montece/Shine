@@ -17,8 +17,8 @@ namespace Shine_Client_Android
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                })
-                .RegisterFirebaseServices();
+                });
+                //.RegisterFirebaseServices();
 
 #if DEBUG
             builder.Logging.AddDebug();

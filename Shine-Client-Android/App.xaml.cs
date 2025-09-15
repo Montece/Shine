@@ -10,7 +10,7 @@ public partial class App
 
         MainPage = new AppShell();
 
-        CrossFirebaseCloudMessaging.Current.TokenChanged += (_, e) =>
+        /*CrossFirebaseCloudMessaging.Current.TokenChanged += (_, e) =>
         {
             Console.WriteLine($"FCM Token: {e.Token}");
         };
@@ -20,6 +20,6 @@ public partial class App
         CrossFirebaseCloudMessaging.Current.NotificationReceived += (_, e) =>
         {
             Console.WriteLine($"Уведомление: {e.Notification.Title} - {e.Notification.Body}");
-        };
+        };*/
     }
 }

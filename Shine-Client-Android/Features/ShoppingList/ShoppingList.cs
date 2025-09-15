@@ -8,5 +8,5 @@ internal class ShoppingList
 
     public required string UserId { get; set; }
 
-    public required DateTime CreatedAt { get; set; }
+    public required DateTimeOffset CreatedAt { get; set; }
 }
